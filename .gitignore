@@ -1,0 +1,12 @@
+# Installed packages (reinstall with: cd desktop-app && npm install)
+node_modules/
+
+# Built installers and build output (rebuild with: npm run dist)
+desktop-app/release/
+
+# Local / OS files
+.env
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini

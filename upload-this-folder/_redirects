@@ -1,0 +1,2 @@
+# PDF documents sent on WhatsApp open on MFD's own address
+/doc/*  https://skydpikflsrkhurogzvj.supabase.co/storage/v1/object/public/mfd-docs/:splat  200

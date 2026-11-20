@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>MFD POS</title>
+<style>
+  html,body{height:100%;margin:0}
+  body{background:#1B1612;color:#F3EDE4;font:15px/1.5 "Segoe UI",system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+  .box{max-width:440px;padding:32px;text-align:center}
+  h1{font-size:30px;letter-spacing:.08em;color:#D9A54A;margin:0 0 4px}
+  .sub{font-size:12px;letter-spacing:.2em;color:#9C8F80;margin-bottom:28px}
+  p{color:#D8CFC3;margin:0 0 12px}
+  button{margin-top:14px;background:#B8642F;color:#fff;border:0;border-radius:8px;padding:11px 26px;font:600 15px "Segoe UI",system-ui,sans-serif;cursor:pointer}
+  small{display:block;margin-top:18px;color:#7D7266;font-size:12px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>M·F·D</h1>
+  <div class="sub">POINT OF SALE</div>
+  <p><b>Connect to the internet once to finish installing.</b></p>
+  <p>The first time MFD POS opens, it downloads the till onto this laptop. After that it works with or without internet.</p>
+  <button id="retry">Try again</button>
+  <small id="why"></small>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const url = q.get("url");
+  const go = () => { if (url) location.href = url; };
+  document.getElementById("retry").onclick = go;
+  document.getElementById("why").textContent = q.get("reason") ? "(" + q.get("reason") + ") Trying again by itself every 15 seconds." : "";
+  setInterval(() => { if (navigator.onLine) go(); }, 15000);
+</script>
+</body>
+</html>

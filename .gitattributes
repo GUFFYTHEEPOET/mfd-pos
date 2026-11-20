@@ -1,0 +1,2 @@
+# Store every file exactly as it is (no line-ending changes), so a clone matches what is deployed
+* -text

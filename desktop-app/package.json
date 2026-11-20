@@ -1,0 +1,54 @@
+{
+  "name": "mfd-pos",
+  "productName": "MFD POS",
+  "version": "2.0.5",
+  "description": "Point of sale for M.F.D Bricks and Sand Supply — by KreativG Studio",
+  "author": "KreativG Studio",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "44.4.5",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "za.co.kreativg.mfdpos",
+    "electronDist": "node_modules/electron/dist",
+    "productName": "MFD POS",
+    "icon": "build/icon.ico",
+    "artifactName": "MFD-POS-Setup-${version}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.cjs",
+      "offline.html",
+      "build/icon.ico",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MFD POS",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}

@@ -1,0 +1,79 @@
+MFD POS WEB APP — HOW TO PUBLISH
+KreativG Studio
+
+WHAT THIS IS
+The MFD POS as a web app on MFD's own domain. Open it once in Chrome or Edge
+on the Asus, click "Install", and it becomes an app with the MFD icon on the
+desktop. It works with no internet. Updates arrive by themselves.
+
+Address:  https://pos.mfdbricksandsand.co.za
+HOSTED ON NETLIFY (site "mfd-pos"; DNS record "pos" at Afrihost is a CNAME to
+mfd-pos.netlify.app). Option B below is the one in use; Option A is not used.
+
+IMPORTANT — PICK THE ADDRESS ONCE AND NEVER CHANGE IT
+The till's data is saved in the browser under that exact address. If the address
+changes later, the app opens empty on the new address (the data can be brought
+back with "Restore from cloud", but avoid it).
+
+------------------------------------------------------------------
+STEP 1 — CHECK WHAT MFD HAS AT AFRIHOST
+Sign in to Afrihost ClientZone with MFD's details.
+  A) If MFD has a WEB HOSTING package for mfdbricksandsand.co.za
+     (website space, cPanel / File Manager): use Option A.
+  B) If MFD has EMAIL ONLY: use Option B (free Netlify), no new Afrihost costs.
+
+------------------------------------------------------------------
+OPTION A — AFRIHOST WEB HOSTING
+1. In the hosting control panel, create the subdomain:  pos
+   (it becomes pos.mfdbricksandsand.co.za and gets its own folder).
+2. Turn on SSL for the subdomain (free certificate). The address MUST open
+   with https and a padlock, otherwise offline mode and Install do not work.
+3. Open File Manager (or FTP), go into the subdomain's folder.
+4. Upload EVERYTHING inside the folder "upload-this-folder", including the
+   hidden file .htaccess (in File Manager, tick "show hidden files").
+5. Open https://pos.mfdbricksandsand.co.za — you should see the MFD sign-in.
+
+OPTION B — NETLIFY (FREE), DOMAIN STAYS AT AFRIHOST
+1. On netlify.com sign in (use the KreativG account you used for Bright Smiles).
+2. Add new site > Deploy manually > drag the folder "upload-this-folder" in.
+3. Site settings > Domain management > Add domain: pos.mfdbricksandsand.co.za
+4. In Afrihost ClientZone > DNS for mfdbricksandsand.co.za, add a record:
+     Type CNAME   Name pos   Value  <your-site-name>.netlify.app
+   Do NOT touch the MX records (that is MFD's email).
+5. Wait for Netlify to show the HTTPS certificate as active, then open the address.
+
+------------------------------------------------------------------
+STEP 2 — INSTALL ON THE ASUS (INSTALLATION DAY)
+1. Open https://pos.mfdbricksandsand.co.za in Chrome or Edge.
+2. Click the install icon in the address bar (or Settings > "Install as app").
+3. Pin the new MFD POS icon to the taskbar. Always open the till from this icon.
+4. Set up the owner account, Go Live, load products, connect MFD's Supabase.
+5. Never use "Clear browsing data" on this laptop. If someone does, the till
+   comes back with Settings > Cloud database > Restore from cloud.
+
+------------------------------------------------------------------
+STEP 3 — PUBLISHING AN UPDATE
+The master copy of the POS is now  upload-this-folder\index.html  (page) and
+upload-this-folder\app.js  (all the code, a separate file so it starts faster). It has the
+multi-device sync, device sign-in and invoice changes of 21 Oct 2026 that the
+old claude.ai version does not have — do NOT rebuild from the claude.ai version).
+1. Make the change in upload-this-folder\index.html.
+2. Run   python tools/stamp-version.py    (new version number)
+3. Run   node tools/deploy-netlify.mjs
+   (Netlify site "mfd-pos", live on https://pos.mfdbricksandsand.co.za
+   and https://mfd-pos.netlify.app). Check that
+   https://pos.mfdbricksandsand.co.za/version.txt shows the new number.
+4. Within an hour (or when the app is reopened) the till shows
+   "A new version of MFD POS is ready". The cashier finishes the sale and
+   presses Update now. Sales and settings are kept.
+
+------------------------------------------------------------------
+TESTED BEFORE HANDOVER (local server)
+- App installs its offline copy on first visit
+- Opens and shows all sales with the internet switched off
+- A new version shows the update bar; Update keeps all sales
+- Sales are saved in the browser database (room for many years of sales)
+- A new copy starts clean: no sample customers or sales, first invoice INV-001
+- No errors and no blocked resources
+
+Support: call or WhatsApp 064 642 4857
