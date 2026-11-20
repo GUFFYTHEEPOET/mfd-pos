@@ -1,2 +1,7 @@
+# Netlify settings for MFD POS (site "mfd-pos", https://pos.mfdbricksandsand.co.za).
+# Every push to the "main" branch on GitHub goes live by itself.
+# Nothing is built: the folder below is published exactly as it is.
 [build]
+  base    = ""
   publish = "upload-this-folder"
+  command = ""
