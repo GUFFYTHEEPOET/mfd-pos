@@ -1,5 +1,5 @@
-/* MFD POS offline worker — KreativG Studio. Version: 20261027-1747-9330aa9a */
-const CACHE = 'mfd-pos-20261027-1747-9330aa9a';
+/* MFD POS offline worker — KreativG Studio. Version: 20261120-1104-b5536f49 */
+const CACHE = 'mfd-pos-20261120-1104-b5536f49';
 const SHELL = ["./", "index.html", "app.js", "fonts.css", "manifest.webmanifest", "fonts/archivo-latin-600-normal.woff2", "fonts/archivo-latin-700-normal.woff2", "fonts/archivo-latin-800-normal.woff2", "fonts/ibm-plex-mono-latin-500-normal.woff2", "fonts/ibm-plex-mono-latin-600-normal.woff2", "fonts/ibm-plex-mono-latin-700-normal.woff2", "fonts/ibm-plex-sans-latin-400-normal.woff2", "fonts/ibm-plex-sans-latin-500-normal.woff2", "fonts/ibm-plex-sans-latin-600-normal.woff2", "fonts/ibm-plex-sans-latin-700-normal.woff2", "icons/apple-touch-icon.png", "icons/favicon-32.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "vendor/html2canvas.min.js", "vendor/jspdf.umd.min.js"];
 
 self.addEventListener('install', e => {

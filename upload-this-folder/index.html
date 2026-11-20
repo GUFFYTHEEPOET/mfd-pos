@@ -512,7 +512,7 @@ h1,h2,h3,.sc-hdr h2,.sb-brand b,.login-brand,.rep-sec h3,.mhdr h3{font-family:'A
 
 /* ═══ LAPTOP FIT (installed on a laptop: 1280–1920 wide, often 720–900 tall) ═══ */
 .sb{overflow:hidden}
-.sb-nav{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
+.sb-nav{flex:1;min-height:0;overflow-y:auto}
 .sb-credit{display:flex;align-items:center;gap:6px;margin-top:10px;padding:0 4px;font-family:var(--font-mono);font-size:9px;letter-spacing:.6px;color:#8E8073}
 .sb-credit img{height:13px;opacity:.85}
 .wm{display:none!important} /* credit lives in the sidebar footer and login screen only */
@@ -844,6 +844,7 @@ h1,h2,h3,.sc-hdr h2,.sb-brand b,.login-brand,.rep-sec h3,.mhdr h3{font-family:'A
   #rcptMo.on{width:80mm!important}
   #rcptMo.on .mo{width:80mm!important;max-width:80mm!important;margin:0!important}
   #rcptMo.on .mbdy{padding:2mm 3mm!important}
+  .fitz{zoom:1!important}
   #rcptMo.on .rcpt{font-family:'Courier New',var(--font-mono),monospace!important;font-size:10.5px!important;line-height:1.5!important;width:100%!important}
   #rcptMo.on .rr{font-size:10.5px!important}
   #rcptMo.on .rtot{font-size:12px!important}
@@ -976,8 +977,40 @@ h1,h2,h3,.sc-hdr h2,.sb-brand b,.login-brand,.rep-sec h3,.mhdr h3{font-family:'A
   .mo .mbdy table.qlt{display:block;overflow:visible}
 }
 
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-thumb{background:var(--sand-d);border-radius:3px}
+/* Scrollbars: wide and dark enough to see and grab with a mouse or a finger */
+::-webkit-scrollbar{width:14px;height:14px}
+::-webkit-scrollbar-track{background:rgba(36,29,22,.06)}
+::-webkit-scrollbar-thumb{background:#9C8670;background-clip:padding-box;border:3px solid transparent;border-radius:8px;min-height:48px}
+::-webkit-scrollbar-thumb:hover,::-webkit-scrollbar-thumb:active{background:var(--clay);background-clip:padding-box}
+::-webkit-scrollbar-corner{background:transparent}
+.sb-nav::-webkit-scrollbar-track{background:rgba(255,255,255,.06)}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.38);background-clip:padding-box}
+.sb-nav::-webkit-scrollbar-thumb:hover,.sb-nav::-webkit-scrollbar-thumb:active{background:var(--clay-l);background-clip:padding-box}
+
+/* Receipts and documents in popups show in full on screen (fitOpenDocs in app.js shrinks
+   them to fit). Screen only: print has its own rules under @media print. */
+@media screen{
+  :is(#rcptMo,#qPrevMo,#delNoteMo,#poNoteMo,#shiftNoteMo,#stmtMo) .mo{max-height:96vh;display:flex;flex-direction:column;overflow:hidden}
+  :is(#rcptMo,#qPrevMo,#delNoteMo,#poNoteMo,#shiftNoteMo,#stmtMo) .mbdy{flex:1 1 auto;min-height:0;overflow-y:auto}
+  :is(#rcptMo,#qPrevMo,#delNoteMo,#poNoteMo,#shiftNoteMo,#stmtMo) .mhdr{flex-shrink:0}
+  :is(#rcptMo,#qPrevMo,#delNoteMo,#poNoteMo,#shiftNoteMo,#stmtMo) .mftr{flex-shrink:0}
+  /* A4 reports (daily report, summary): no small scroll box; the letter reflows to the
+     popup's width (the header stacks on narrow screens), so nothing is cut off */
+  .yr-view{max-height:none;overflow:visible}
+  #askMo .mo:has(.yr-view){width:860px}
+  .yr-view .pd-head{flex-wrap:wrap}
+  .yr-view .pd-head>*{min-width:0;max-width:100%}
+  .yr-view .pd-meta{min-width:0;flex:1 1 200px}
+  .yr-view .pd-head img,.yr-view .pd-head svg{max-width:100%}
+  @media (max-width:600px){.yr-view{padding:10px}.yr-view .pd-meta,.yr-view .pd-title{text-align:left}}
+  #rcptMo .mo{width:520px}
+  #rcptMo .mhdr{padding:10px 20px 8px}
+  #rcptMo .mbdy{flex:1 1 auto;min-height:0;overflow-y:auto;padding:10px 24px}
+  #rcptMo .mftr{padding:9px 20px}
+  #rcptMo .rcpt{line-height:1.5}
+  #rcptMo .rc-logo{max-width:150px;margin-bottom:2px}
+  #rcptMo .rdv{margin:4px 0}
+}
 
 /* ═══ PRODUCTION POLISH: one icon set, one number style, real controls ═══ */
 :root{--font-mono:'IBM Plex Sans',system-ui,sans-serif;--r-ctl:9px}

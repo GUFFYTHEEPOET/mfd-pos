@@ -1407,7 +1407,7 @@ ${splitCash>0||splitCard>0?`<div class="rdv"></div><div class="rr" style="font-s
 ${depositAmt>0?`<div class="rdv"></div><div class="rr" style="font-size:12px;color:var(--gd)"><span>Deposit Paid Now</span><span>R ${fmtR(depositAmt)}</span></div><div class="rr" style="font-size:13px;font-weight:800;color:${remainingOwed>0?'var(--err)':'var(--ok)'}"><span>Balance Remaining</span><span>R ${fmtR((remainingOwed||0))}</span></div>`:''}
 ${tendered>0?`<div class="rdv"></div><div class="rr" style="font-size:12px;color:var(--gd)"><span>Cash Received</span><span>R ${fmtR(tendered)}</span></div><div class="rr" style="font-size:13px;font-weight:800;color:var(--ok)"><span>Change</span><span>R ${fmtR(change)}</span></div>`:''}
 ${note?`<div class="rdv"></div><div style="font-size:11px;color:var(--g)">Note: ${note}</div>`:''}
-${bankBlock()}<div class="rdv"></div><div style="text-align:center;font-size:11px;color:var(--g)">${S.settings.footer}</div><div style="text-align:center;font-size:9px;color:#999;margin-top:4px;letter-spacing:.5px">MFD POS · by KreativG Studio</div>`;
+${bankBlock()}<div class="rdv"></div><div style="text-align:center;font-size:11px;color:var(--g)">${S.settings.footer}</div>`;
   openMo('rcptMo');
 }
 
@@ -1721,7 +1721,7 @@ function viewSaleTx(id){
 <div class="rdv"></div>${lines}<div class="rdv"></div>
 <div class="rr rtot"><span>TOTAL</span><span>R ${fmtR(t.amount)}</span></div>
 ${t.note?`<div class="rdv"></div><div style="font-size:11px;color:var(--g)">Note: ${t.note}</div>`:''}
-${bankBlock()}<div class="rdv"></div><div style="text-align:center;font-size:11px;color:var(--g)">${S.settings.footer}</div><div style="text-align:center;font-size:9px;color:#999;margin-top:4px;letter-spacing:.5px">MFD POS · by KreativG Studio</div>`;
+${bankBlock()}<div class="rdv"></div><div style="text-align:center;font-size:11px;color:var(--g)">${S.settings.footer}</div>`;
   openMo('rcptMo');
 }
 
@@ -2754,7 +2754,7 @@ function a4Items(rows){
 }
 function a4Totals(rows){return `<table class="pd-tot">${rows.filter(Boolean).map(([k,v,b])=>`<tr class="${b?'b':''}"><td>${k}</td><td class="r">${v}</td></tr>`).join('')}</table>`;}
 function a4Bank(){const b=S.settings.bank;return b?`<div class="pd-box"><div class="pd-lbl">EFT payments</div>${esc(b)}</div>`:'';}
-function a4Foot(note){return `${note?`<div class="pd-note">${note}</div>`:''}<div class="pd-foot">${esc(S.settings.footer||'')}<div class="pd-kg"><img src="${KG_LOGO}" alt=""> MFD POS · software by KreativG Studio · kreativgstudio.co.za</div></div>`;}
+function a4Foot(note){return `${note?`<div class="pd-note">${note}</div>`:''}<div class="pd-foot">${esc(S.settings.footer||'')}</div>`;}
 function txSub(t){return (t.cart||[]).reduce((s,i)=>s+gP(i)*i.qty,0);}
 function printInvoiceA4(id){const h=invoiceDocHtml(id);if(!h){toast('Sale not found',true);return;}printHTML(h,'a4');}
 function invoiceDocHtml(id){
@@ -2794,7 +2794,7 @@ function delCopy(d,label){
   <div class="pd-parties">${a4Party('Deliver to',[d.cust,d.phone||'',d.addr||''])}${a4Party('Notes',[d.notes||'Please receive in good order and condition the goods below.'])}</div>
   ${items?`<table class="pd-tbl"><thead><tr><th>Goods</th><th class="r">Qty</th><th>Unit</th></tr></thead><tbody>${items.map(i=>`<tr><td>${esc(i.name)}</td><td class="r">${Number(i.qty).toLocaleString('en-ZA')}</td><td>${esc(unitLbl?unitLbl(i.unit):i.unit)}</td></tr>`).join('')}</tbody></table>`:`<div class="pd-box">${esc(d.load)}</div>`}
   <div class="pd-sign3"><div>Received in good order by (name)</div><div>Signature</div><div>Date and time</div></div>
-  <div class="pd-kg small"><img src="${KG_LOGO}" alt=""> MFD POS · software by KreativG Studio</div></div>`;
+  </div>`;
 }
 // printed: customer copy + MFD copy for the driver to have signed; PDF for the customer: one copy
 function printDeliveryA4(id){
@@ -2865,7 +2865,7 @@ function weeklyHTML(r){
 }
 function weeklyText(r){
   const vr=x=>Math.abs(x)<0.01?'Balanced':(x<0?'Short '+RZ(-x):'Over '+RZ(x));
-  return `${S.settings.compName} — Weekly Report\n${fmtD(r.start)} to ${fmtD(new Date(r.end-864e5))}\n\nSALES: ${RZ(r.total)} (${r.count} invoices)\nCash ${RZ(r.cash)} · Card ${RZ(r.card)} · EFT ${RZ(r.eft)}\nAccount payments received: ${RZ(r.acctPaid)}\nNew sales on account: ${RZ(r.accountNew)}\n\nTOP PRODUCTS:\n${r.top.map(([n,v],i)=>`${i+1}. ${n} — ${Number(v.qty).toLocaleString('en-ZA')} ${unitLbl?unitLbl(v.unit):v.unit} — ${RZ(v.rev)}`).join('\n')||'No sales'}\n\nDELIVERIES: ${r.delDone} delivered · ${r.delOpen} open · ${r.delOverdue} overdue · ${r.noSlip} slips not back\nOWED TO MFD: ${RZ(r.owed)} (${RZ(r.overdue)} overdue)\nCASH-UPS: ${r.cashups} · Cash ${vr(r.cashVar)} · Card ${vr(r.cardVar)} · Pay-outs ${RZ(r.payOuts)}\nDISCOUNTS: ${RZ(r.discounts)} · REFUNDS: ${RZ(r.refunds)}\nSTOCK LOST: ${RZ(Math.abs(r.stockLoss))}\nLOW STOCK: ${r.low.map(p=>p.name).join(', ')||'None'}\n\n— MFD POS by KreativG Studio`;
+  return `${S.settings.compName} — Weekly Report\n${fmtD(r.start)} to ${fmtD(new Date(r.end-864e5))}\n\nSALES: ${RZ(r.total)} (${r.count} invoices)\nCash ${RZ(r.cash)} · Card ${RZ(r.card)} · EFT ${RZ(r.eft)}\nAccount payments received: ${RZ(r.acctPaid)}\nNew sales on account: ${RZ(r.accountNew)}\n\nTOP PRODUCTS:\n${r.top.map(([n,v],i)=>`${i+1}. ${n} — ${Number(v.qty).toLocaleString('en-ZA')} ${unitLbl?unitLbl(v.unit):v.unit} — ${RZ(v.rev)}`).join('\n')||'No sales'}\n\nDELIVERIES: ${r.delDone} delivered · ${r.delOpen} open · ${r.delOverdue} overdue · ${r.noSlip} slips not back\nOWED TO MFD: ${RZ(r.owed)} (${RZ(r.overdue)} overdue)\nCASH-UPS: ${r.cashups} · Cash ${vr(r.cashVar)} · Card ${vr(r.cardVar)} · Pay-outs ${RZ(r.payOuts)}\nDISCOUNTS: ${RZ(r.discounts)} · REFUNDS: ${RZ(r.refunds)}\nSTOCK LOST: ${RZ(Math.abs(r.stockLoss))}\nLOW STOCK: ${r.low.map(p=>p.name).join(', ')||'None'}`;
 }
 let _wk=null;
 function openWeekly(){document.getElementById('wkRange').value=[0,1].includes(new Date().getDay())?'last':'this';renderWeekly();openMo('weekMo');}
@@ -3416,7 +3416,7 @@ const yardLetter=(r,title,intro,body)=>`<div class="pd pd-rep">${a4Head(title,[[
     <div style="margin-top:12px">Dear Sir,<br>${esc(intro)} for ${esc(longDate(r.date))}:</div>
     ${body}
     <div style="margin-top:12px">Thank you.<br>Kind regards,<br><b>${esc(S.settings.compName)}</b></div>
-    <div class="pd-foot"><div class="pd-kg"><img src="${KG_LOGO}" alt=""> MFD POS · software by KreativG Studio</div></div></div>`;
+    </div>`;
 const yardSecName=t=>t.charAt(0)+t.slice(1).toLowerCase();
 // the whole report: every part, numbered
 function yardDocHtml(id){
@@ -3487,7 +3487,7 @@ function yardSummaryHtml(list,period){
     ${list.some(r=>(r.complaints||[]).length)?`<h4>Customer complaints</h4>${yardRowsHtml(list.flatMap(r=>(r.complaints||[]).map(c=>({...c,name:`${c.name||''} (${fmtYmd(r.date)})`}))),Y_COMPL)}`:''}
     ${list.some(r=>r.shortages)?`<h4>Shortages reported</h4><ul>${list.filter(r=>r.shortages).map(r=>`<li>${esc(fmtYmd(r.date))}: ${esc(r.shortages)}</li>`).join('')}</ul>`:''}
     ${list.some(r=>r.issues)?`<h4>Problems reported</h4><ul>${list.filter(r=>r.issues).map(r=>`<li>${esc(fmtYmd(r.date))} (${YARD_SHORT[r.type]}): ${esc(r.issues)}</li>`).join('')}</ul>`:''}
-    <div class="pd-foot"><div class="pd-kg"><img src="${KG_LOGO}" alt=""> MFD POS · software by KreativG Studio</div></div></div>`;
+    </div>`;
 }
 function yardWeekSummary(){
   if(yardRange==='all'&&!el('yFrom').value) setYardRange('week');
@@ -3558,7 +3558,7 @@ function ppeDocHtml(){
     ${ws.map(w=>`<tr><td>${esc(w.no??'')}</td><td>${esc(w.name)}${w.note?` <span style="color:#777">(${esc(w.note)})</span>`:''}</td><td class="r">${esc(w.suit??'')}</td><td class="r">${esc(w.boots??'')}</td></tr>`).join('')}</tbody></table>
     <div style="margin-top:10px"><b>TOTAL: ${ws.length} worker${ws.length===1?'':'s'} listed.</b>${s.ppeNote?`<br>Note: ${esc(s.ppeNote)}`:''}</div>
     <div style="margin-top:6px"><b>Work suits:</b> ${esc(ppeCounts('suit')||'—')}<br><b>Boots:</b> ${esc(ppeCounts('boots')||'—')}</div>
-    <div class="pd-foot"><div class="pd-kg"><img src="${KG_LOGO}" alt=""> MFD POS · software by KreativG Studio</div></div></div>`;
+    </div>`;
 }
 async function ppePdf(){toast('Preparing the PDF…');try{savePdf(await htmlToPdf(ppeDocHtml()),'PPE-'+ymd(new Date()));}catch(e){toast('Could not make the PDF: '+e.message,true);}}
 function sendPpe(){
@@ -4439,7 +4439,7 @@ async function delHistPdf(){
   const html=`<div class="pd">${a4Head('DELIVERY HISTORY',[['Period',period],['Deliveries',String(rows.length)],['Loads',String(rows.reduce((s,d)=>s+delLoads(d),0))]])}
     <table class="pd-tbl" style="margin-top:12px"><thead><tr><th>Delivery</th><th>Customer</th><th>Goods</th><th>Delivered</th><th>Received by</th><th>Slip</th></tr></thead><tbody>
     ${rows.map(d=>`<tr><td>${esc(d.id)}</td><td>${esc(d.cust)}</td><td>${esc(d.load)}</td><td>${d.times?.delivered?dTime(d.times.delivered):esc(d.date)}</td><td>${esc(d.receivedBy||'')}</td><td>${d.slip?'Signed':'Not back'}</td></tr>`).join('')}</tbody></table>
-    <div class="pd-foot"><div class="pd-kg"><img src="${KG_LOGO}" alt=""> MFD POS · software by KreativG Studio</div></div></div>`;
+    </div>`;
   toast('Preparing the PDF…');
   try{savePdf(await htmlToPdf(html),`MFD-delivery-history-${new Date().toISOString().slice(0,10)}`);}catch(e){toast('Could not make the PDF: '+e.message,true);}
 }
@@ -5161,7 +5161,27 @@ async function saveMyPassword(){
 // ═══════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════
-function openMo(id){document.getElementById(id).classList.add('on');}
+function openMo(id){document.getElementById(id).classList.add('on');if(DOC_MOS.includes(id)||id==='askMo') requestAnimationFrame(fitOpenDocs);}
+// Receipts and documents show in full on screen, without scrolling inside them.
+// Slip-style popups (receipt, quote, delivery note…): if taller than the window, shrink
+// just enough to fit (never below 72%, so it stays readable; only a very long one scrolls).
+// A4 reports (daily report, summary): no small scroll box, and the letter reflows to the
+// popup's width (CSS .yr-view), so nothing is cut off on the right.
+// Screen only: print and PDF reset the size (class "fitz", see @media print).
+const DOC_MOS=['rcptMo','qPrevMo','delNoteMo','poNoteMo','shiftNoteMo','stmtMo'];
+function fitOpenDocs(){
+  DOC_MOS.forEach(id=>{
+    const ov=el(id);if(!ov||!ov.classList.contains('on')) return;
+    const b=ov.querySelector('.mbdy'),r=b&&b.firstElementChild;if(!r) return;
+    r.classList.add('fitz');r.style.zoom='';
+    let z=1;
+    // shrinking re-wraps the text a little, so measure again (up to 3 times)
+    for(let i=0;i<3&&b.scrollHeight-b.clientHeight>0&&z>.72;i++){
+      z=Math.max(.72,z*b.clientHeight/b.scrollHeight-.005);r.style.zoom=z.toFixed(3);
+    }
+  });
+}
+window.addEventListener('resize',()=>requestAnimationFrame(fitOpenDocs));
 function closeMo(id){document.getElementById(id).classList.remove('on');if(id==='askMo') el('askMo').querySelector('.mo').classList.remove('wide');if(id==='rcptMo'&&saleDone){saleDone=false;clearCartNow();}}
 // prints only that window (the till slip, a statement…), never the screen behind it
 function printMo(id){
